@@ -10,7 +10,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString(exclude = {""})
+@ToString
+//@ToString(exclude = {""})
 public class MemberEntity {
 
     @Id

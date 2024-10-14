@@ -14,7 +14,7 @@ import org.zerock.api1014.common.dto.PageResponseDTO;
 import org.zerock.api1014.product.domain.Product;
 import org.zerock.api1014.product.domain.QAttachFile;
 import org.zerock.api1014.product.domain.QProduct;
-import org.zerock.api1014.product.domain.QReivew;
+import org.zerock.api1014.product.domain.QReview;
 import org.zerock.api1014.product.dto.ProductListDTO;
 
 import java.util.ArrayList;
@@ -32,13 +32,13 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
         log.info("--------------------------list----------------");
 
         QProduct product = QProduct.product;
-        QReivew reivew = QReivew.reivew;
+        QReview review = QReview.review;
 
         QAttachFile attachFile = QAttachFile.attachFile;
 
 
         JPQLQuery<Product> query = from(product);
-        query.leftJoin(reivew).on(reivew.product.eq(product));
+        query.leftJoin(review).on(review.product.eq(product));
         query.leftJoin(product.attachFiles, attachFile);
 
         query.where(attachFile.ord.eq(0));
@@ -50,7 +50,7 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
         JPQLQuery<Tuple> tupleQuery =
                 query.select(
                         product,
-                        reivew.count(),
+                        review.count(),
                         attachFile.fileName
                         );
         tupleQuery.fetch();
@@ -71,14 +71,14 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
 
 
         QProduct product = QProduct.product;
-        QReivew reivew = QReivew.reivew;
+        QReview review = QReview.review;
 
         QAttachFile attachFile = QAttachFile.attachFile;
         QCategoryProduct categoryProduct = QCategoryProduct.categoryProduct;
 
 
         JPQLQuery<Product> query = from(product);
-        query.leftJoin(reivew).on(reivew.product.eq(product));
+        query.leftJoin(review).on(review.product.eq(product));
         query.leftJoin(categoryProduct).on(categoryProduct.product.eq(product));
         query.leftJoin(product.attachFiles, attachFile);
 
@@ -92,7 +92,7 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
         JPQLQuery<Tuple> tupleQuery =
                 query.select(
                         product,
-                        reivew.count(),
+                        review.count(),
                         attachFile.fileName
                 );
         List<Tuple> tupleList = tupleQuery.fetch();
