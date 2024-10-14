@@ -8,4 +8,6 @@ public interface ProductSearch {
 
     Page<Product> list(Pageable pageable);
 
+    Page<Product> listByCno(Long cno, Pageable pageable);
+
 }

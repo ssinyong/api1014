@@ -23,4 +23,10 @@ public class ProductRepositoryTests {
 
         productRepository.list(pageable);
     }
+
+    @Test
+    public void testList2(){
+        Pageable pageable = PageRequest.of(0,10);
+        productRepository.listByCno(1L,pageable);
+    }
 }
