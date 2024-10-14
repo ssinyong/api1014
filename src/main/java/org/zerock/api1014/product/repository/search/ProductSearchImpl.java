@@ -51,7 +51,7 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                 query.select(
                         product,
                         review.count(),
-                        attachFile.fileName
+                        attachFile.filename
                         );
         tupleQuery.fetch();
 
@@ -93,7 +93,7 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                 query.select(
                         product,
                         review.count(),
-                        attachFile.fileName
+                        attachFile.filename
                 );
         List<Tuple> tupleList = tupleQuery.fetch();
 

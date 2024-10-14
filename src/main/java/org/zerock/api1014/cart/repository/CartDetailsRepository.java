@@ -6,21 +6,27 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.zerock.api1014.cart.domain.CartDetails;
+import org.zerock.api1014.cart.dto.CartDetailsListDTO;
 
 public interface CartDetailsRepository extends JpaRepository<CartDetails, Long> {
 
     @Query("""
-        SELECT p, count(r)
+        SELECT 
+            new org.zerock.api1014.cart.dto.CartDetailsListDTO(
+            p.pno, p.name, p.price, count(r), attach.filename,
+            cd.qty
+            )
+            
         FROM 
             MemberEntity m 
             left join Cart c ON c.member = m
             left join CartDetails cd ON cd.cart = c
             join Product p ON p = cd.product
-            left join p.attachFiles
+            left join p.attachFiles attach
             left join Review r ON r.product = p
          where m.email = :email
-         and p.attachFiles.ord = 0
+         and attach.ord = 0
          group by p
     """)
-    Page<Object[]> listOfMember(@Param("email") String email, Pageable pageable);
+    Page<CartDetailsListDTO[]> listOfMember(@Param("email") String email, Pageable pageable);
 }
