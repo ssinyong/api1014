@@ -28,7 +28,7 @@ public class MemberRepositoryTests {
     @Commit
     public void testDummies(){
 
-        for (int i = 0; i <= 10 ; i++) {
+        for (int i = 1; i <= 10 ; i++) {
             MemberEntity member = MemberEntity.builder()
                     .email("user" + i + "@@@.com")
                     .pw(passwordEncoder.encode("1111"))
