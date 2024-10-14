@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.zerock.api1014.common.dto.PageRequestDTO;
 
+
 @DataJpaTest
 @Log4j2
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -33,4 +34,5 @@ public class ProductRepositoryTests {
         log.info(productRepository.listByCno(1L,pageRequestDTO));
 
     }
+
 }
