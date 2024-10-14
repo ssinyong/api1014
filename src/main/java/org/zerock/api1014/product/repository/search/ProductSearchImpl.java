@@ -2,12 +2,10 @@ package org.zerock.api1014.product.repository.search;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.JPQLQuery;
-import com.querydsl.jpa.impl.JPAQuery;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
-import org.zerock.api1014.category.domain.QCategory;
 import org.zerock.api1014.category.domain.QCategoryProduct;
 import org.zerock.api1014.product.domain.Product;
 import org.zerock.api1014.product.domain.QAttachFile;
@@ -85,10 +83,21 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                 );
         List<Tuple> tupleList = tupleQuery.fetch();
 
-        tupleList.stream().map(tuple -> {
-            log.info(tuple);
+        log.info(tupleList);
 
-            return null;
+
+            tupleList.forEach(t -> {
+                Product productObj = t.get(0, Product.class);
+                long count = t.get(1, Long.class);
+                String fileName = t.get(2, String.class);
+
+                log.info(productObj);
+                log.info(productObj.getTags());
+                log.info(count);
+                log.info(fileName);
+
+
+
         });
 
         return null;
