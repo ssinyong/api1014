@@ -6,6 +6,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.zerock.api1014.common.exception.TaskException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,4 +33,12 @@ public class CommonControllerAdvice {
 
         return ResponseEntity.status(400).body(map);
     }
+
+    @ExceptionHandler(TaskException.class)
+    public ResponseEntity<String> hanndle(TaskException ex){
+
+        return ResponseEntity.status(ex.getCode()).body(ex.getMessage());
+    }
+
 }
+
