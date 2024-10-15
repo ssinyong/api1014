@@ -19,7 +19,7 @@ public class CustomSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(
-                (auth) -> auth.requestMatchers("/api/v1/category").permitAll()
+                (auth) -> auth.requestMatchers("/api/v1/product/list").permitAll()
         );
 
         http.csrf(config -> config.disable());
