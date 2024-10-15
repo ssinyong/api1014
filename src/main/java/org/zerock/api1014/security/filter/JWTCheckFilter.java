@@ -17,6 +17,13 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
         log.info("shouldNotFilter");
 
+        String uri = request.getRequestURI();
+        log.info("----------------------------");
+
+        if(uri.equals("/api/v1/member/makeToken")){
+         return true;
+        }
+
         return false;
     }
 
