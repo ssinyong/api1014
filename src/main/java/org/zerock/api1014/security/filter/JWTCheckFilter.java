@@ -13,7 +13,6 @@ import org.zerock.api1014.security.util.JWTUtil;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.util.Map;
 
 @Log4j2
