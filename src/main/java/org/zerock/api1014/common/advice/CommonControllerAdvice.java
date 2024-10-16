@@ -2,6 +2,7 @@ package org.zerock.api1014.common.advice;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,6 +39,14 @@ public class CommonControllerAdvice {
     public ResponseEntity<String> hanndle(TaskException ex){
 
         return ResponseEntity.status(ex.getCode()).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Map<String,Object>> hanndle(AccessDeniedException ex){
+
+        Map<String, Object> map = Map.of("status", 403, "message", "Access Denied");
+
+        return ResponseEntity.status(403).body(map);
     }
 
 }

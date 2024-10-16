@@ -43,7 +43,7 @@ public class MemberController {
                 "email", memberDTO.getEmail(),
                 "role", memberDTO.getRole() );
 
-        String accessToken = jwtUtil.createToken(claimMap,5);
+        String accessToken = jwtUtil.createToken(claimMap,30);
         String refreshToken = jwtUtil.createToken(claimMap,360);
 
         TokenResponseDTO tokenResponseDTO = new TokenResponseDTO();

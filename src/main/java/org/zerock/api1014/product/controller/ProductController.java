@@ -21,8 +21,8 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @PreAuthorize("permitAll()")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("list")
     public ResponseEntity<PageResponseDTO<ProductListDTO>> list(
             @Validated PageRequestDTO requestDTO
