@@ -15,9 +15,9 @@ import org.zerock.api1014.product.dto.ProductListDTO;
 import org.zerock.api1014.product.service.ProductService;
 import org.zerock.api1014.security.auth.CustomUserPrincipal;
 
+@Log4j2
 @RestController
 @RequestMapping("/api/v1/product")
-@Log4j2
 @RequiredArgsConstructor
 @PreAuthorize("permitAll()")
 public class ProductController {
@@ -31,7 +31,7 @@ public class ProductController {
             @Validated PageRequestDTO requestDTO,
             @AuthenticationPrincipal CustomUserPrincipal principal
     ) {
-        log.info("--------------------------Product Controller list");
+        log.info("-------------Product Controller list-------------");
         log.info("==========================");
         log.info(principal);
         return ResponseEntity.ok(productService.list(requestDTO));
