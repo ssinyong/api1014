@@ -1,5 +1,6 @@
 package org.zerock.api1014.security.filter;
 
+import com.google.gson.Gson;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,6 +9,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.Map;
 
 @Log4j2
 public class JWTCheckFilter extends OncePerRequestFilter {
@@ -32,7 +36,35 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
         log.info("doFilterInternal");
 
+        String authHeader = request.getHeader("Authorization");
+
+        String token = null;
+        if(authHeader != null && authHeader.startsWith("Bearer ")){
+            token = authHeader.substring(7);
+        }else {
+            makeError(response, Map.of("status",401, "msg", "No Access Token"));
+            return;
+        }
+
+
         filterChain.doFilter(request, response); //다음 필터로 넘어가게 함
+    }
+    private void makeError(HttpServletResponse response, Map<String, Object> map) {
+
+        Gson gson = new Gson();
+        String jsonStr = gson.toJson(map);
+
+        response.setContentType("application/json");
+        response.setStatus((int)map.get("status"));
+        try {
+            PrintWriter out = response.getWriter();
+            out.println(jsonStr);
+            out.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
 }
