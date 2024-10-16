@@ -47,6 +47,8 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         }
 
 
+
+
         filterChain.doFilter(request, response); //다음 필터로 넘어가게 함
     }
     private void makeError(HttpServletResponse response, Map<String, Object> map) {
