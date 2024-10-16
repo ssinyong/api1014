@@ -37,10 +37,20 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         return false;
     }
 
+//    @Override
+//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+//
+//        log.info("doFilterInternal");
+//        filterChain.doFilter(request, response);
+
+//    } //테스트할 때
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         log.info("doFilterInternal");
+
+        log.info(request.getRequestURI());
 
         String authHeader = request.getHeader("Authorization");
 
