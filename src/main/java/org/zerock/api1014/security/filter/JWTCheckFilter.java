@@ -1,6 +1,7 @@
 package org.zerock.api1014.security.filter;
 
 import com.google.gson.Gson;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -57,14 +58,24 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             Map<String, Object> claims = jwtUtil.validateToken(token);
             log.info(claims);
 
-        }catch (Exception e){
+            filterChain.doFilter(request, response); //다음 필터로 넘어가게 함
+
+        }catch (JwtException e){
+
+            log.info(e.getClass().getName());
+            log.info(e.getMessage());
+            log.info("------------------------");
+
+            String classFullName = e.getClass().getName();
+
+            String shortClassName = classFullName.substring(classFullName.lastIndexOf(".") + 1);
+
+            makeError(response, Map.of("status", 401, "msg", shortClassName));
+
             e.printStackTrace();
         }
 
 
-
-
-        filterChain.doFilter(request, response); //다음 필터로 넘어가게 함
     }
     private void makeError(HttpServletResponse response, Map<String, Object> map) {
 
