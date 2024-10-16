@@ -10,7 +10,7 @@ public enum MemberExceptions {
         exception = new MemberTaskException(status, msg);
     }
 
-    MemberTaskException get() {
+    public MemberTaskException get() {
         return exception;
     }
 }
