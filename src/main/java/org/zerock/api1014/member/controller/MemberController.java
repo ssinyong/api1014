@@ -3,6 +3,8 @@ package org.zerock.api1014.member.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +30,12 @@ public class MemberController {
 
     private final JWTUtil jwtUtil;
 
+    @Value("${org.zerock.accessTime}")
+    private int accessTime;
+
+    @Value("${org.zerock.refreshTime}")
+    private int refreshTime;
+
     @PostMapping("makeToken")
     public ResponseEntity<TokenResponseDTO> makeToken(@RequestBody @Validated TokenRequestDTO tokenRequestDTO) {
 
@@ -43,8 +51,8 @@ public class MemberController {
                 "email", memberDTO.getEmail(),
                 "role", memberDTO.getRole() );
 
-        String accessToken = jwtUtil.createToken(claimMap,30);
-        String refreshToken = jwtUtil.createToken(claimMap,360);
+        String accessToken = jwtUtil.createToken(claimMap,accessTime);
+        String refreshToken = jwtUtil.createToken(claimMap,refreshTime);
 
         TokenResponseDTO tokenResponseDTO = new TokenResponseDTO();
         tokenResponseDTO.setAccessToken(accessToken);
@@ -53,5 +61,11 @@ public class MemberController {
 
 
         return ResponseEntity.ok(tokenResponseDTO);
+    }
+
+    @PostMapping(value = "refreshToekn", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE) //일반적인 POST 방식만 처리할 수 있어
+    public ResponseEntity<TokenResponseDTO> refreshToekn(String refreshToken) {
+
+        return null;
     }
 }
