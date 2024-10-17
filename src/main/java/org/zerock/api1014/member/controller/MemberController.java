@@ -33,6 +33,9 @@ public class MemberController {
     @Value("${org.zerock.refreshTime}")
     private int refreshTime;
 
+    @Value("${org.zerock.alwaysNew}")
+    private boolean alwaysNew;
+
     @PostMapping("makeToken")
     public ResponseEntity<TokenResponseDTO> makeToken(@RequestBody @Validated TokenRequestDTO tokenRequestDTO) {
 
@@ -94,7 +97,29 @@ public class MemberController {
         }catch (ExpiredJwtException ex) {
             //정상적으로 만료된 경우
 
-            //만일 RefreshToken 마저 만료되었다면
+            //만일 RefreshToken 마저 만료되었다면 catch
+            try{
+                Map<String, Object> payload = jwtUtil.validateToken(refreshToken);
+                String email = payload.get("email").toString();
+                String role = payload.get("role").toString();
+                String newAccessToken = null;
+                String newRefreshToken = null;
+
+                if(alwaysNew) {
+                    Map<String, Object> claimMap = Map.of("email", email, "role", role);
+                    newAccessToken = jwtUtil.createToken(claimMap,accessTime);
+                    newRefreshToken = jwtUtil.createToken(claimMap,refreshTime);
+                }
+                TokenResponseDTO tokenResponseDTO = new TokenResponseDTO();
+                tokenResponseDTO.setAccessToken(newAccessToken);
+                tokenResponseDTO.setRefreshToken(newRefreshToken);
+                tokenResponseDTO.setEmail(email);
+
+                return ResponseEntity.ok(new TokenResponseDTO());
+
+            }catch (ExpiredJwtException ex2) {
+                throw MemberExceptions.REQUIRE_SIGH_IN.get();
+            }
         }
 
         return null;
